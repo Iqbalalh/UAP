@@ -39,8 +39,8 @@ void init() {
     gameover = 0;
     gotoxy(3, 2); cout<<"SCORE : ";
     for (int i = 0; i < 79; i++){
-    	gotoxy(1+i, 1); cout<<"ß";
-    	gotoxy(1+i, 25); cout<<"ß";
+    	gotoxy(1+i, 1); cout<<"ÃŸ";
+    	gotoxy(1+i, 25); cout<<"ÃŸ";
 	} 
 }
 
@@ -79,7 +79,7 @@ void moveDino(int jump = 0) {
     
     gotoxy(2, 25 - dinoY);
     if (jump == 0) {
-        cout<<"ßßßßßßßßßßßßßßßßß";
+        cout<<"ÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸÃŸ";
     } else {
         cout<<"                ";
     } 
@@ -153,10 +153,10 @@ int main() {
 		gotoxy(10,4); cout<<"GAME LOMPAT KOTAK";
 		gotoxy(10,7); cout<<"1. Mulai ";
 		gotoxy(10,8); cout<<"3. Keluar";
-		char op = getche();
+		char mulai = getche();
 		
-		if( op=='1') play();
-		else if( op=='3') exit(0);
+		if( mulai=='1') play();
+		else if( mulai=='3') exit(0);
 		
 	}while(1);
     
