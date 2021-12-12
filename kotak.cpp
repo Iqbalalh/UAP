@@ -3,19 +3,16 @@
 #include <time.h>
 #include <windows.h>
 
-#define dinoPos 2
-#define hurdlePos 74
+#define posisi_pekmen 2
+#define posisi_duri 74
 
 using namespace std;
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 COORD CursorPosition;
-//dinopos= ferisna
-//hurdlepos= kotak
-//dinoy=cika
 
-int dinoY;
-int speed = 40;
-int gameover = 0;
+int pekmen;
+int laju = 100;
+int selesai = 0;
 
 void gotoxy(int x, int y) {
     COORD coord;
@@ -26,114 +23,124 @@ void gotoxy(int x, int y) {
 
 void setcursor(bool visible, DWORD size){
     if (size == 0) {
-        size = 20; // default cursor size Changing to numbers from 1 to 20, decreases cursor width
+        size = 20;
     }
     CONSOLE_CURSOR_INFO lpCursor;
     lpCursor.bVisible = visible;
     lpCursor.dwSize = size;
     SetConsoleCursorInfo(console, & lpCursor);
 }
- 
-void init() {
+
+
+void skor() {
     system("cls"); 
-    gameover = 0;
-    gotoxy(3, 2); cout<<"SCORE : ";
-    for (int i = 0; i < 79; i++){
+    selesai = 0;
+    gotoxy(3, 2); cout<<"Skor : ";
+    for (int i=0;i<79;i++){
     	gotoxy(1+i, 1); cout<<"п";
     	gotoxy(1+i, 25); cout<<"п";
 	} 
 }
 
-void moveDino(int jump = 0) {
-    static int foot = 0;
+void gerakan(int lompat = 0) {
+    static int kaki = 0;
 
-    if (jump == 0)
-        dinoY = 0;
-    else if (jump == 2)
-        dinoY--;
-    else dinoY++;
+    if (lompat == 0)
+        pekmen = 0;
+    else if (lompat == 2)
+        pekmen--;
+    else pekmen++;
 
-    gotoxy(dinoPos, 19 - dinoY);cout<<"      ____      ";
-    gotoxy(dinoPos, 20 - dinoY);cout<<"     /    |     ";
-    gotoxy(dinoPos, 21 - dinoY);cout<<"     | :V |     ";
-    gotoxy(dinoPos, 22 - dinoY);cout<<"     |____/     ";
-    gotoxy(dinoPos, 23 - dinoY);
+    gotoxy(posisi_pekmen, 15 - pekmen);cout<<"                 ";
+    gotoxy(posisi_pekmen, 16 - pekmen);cout<<"         млпллллм";
+    gotoxy(posisi_pekmen, 17 - pekmen);cout<<"         лллллллл";
+    gotoxy(posisi_pekmen, 18 - pekmen);cout<<"         лллллппп";
+    gotoxy(posisi_pekmen, 19 - pekmen);cout<<" л      мллллппп ";
+    gotoxy(posisi_pekmen, 20 - pekmen);cout<<" ллм  мллллллммм ";
+    gotoxy(posisi_pekmen, 21 - pekmen);cout<<" пллллллллллл  п ";
+    gotoxy(posisi_pekmen, 22 - pekmen);cout<<"   плллллллп     ";
+    gotoxy(posisi_pekmen, 23 - pekmen);
 
-    if (jump == 1 || jump == 2) {
-        cout<<"     ____        ";
-        gotoxy(2, 24 - dinoY);
-        cout<<"    |    |       ";
+    if (lompat == 1 || lompat == 2) {
+        cout<<"    ллп пл       ";
+        gotoxy(2, 24 - pekmen);
+        cout<<"    лм   лм      ";
     } 
-	else if (foot == 0) {
-        cout<<"    |    |       ";
-        gotoxy(2, 24 - dinoY);
-        cout<<"    |    |       ";
-        foot = !foot;
+	else if (kaki == 0) {
+        cout<<"    пллп  ппп    ";
+        gotoxy(2, 24 - pekmen);
+        cout<<"      лм         ";
+        kaki = !kaki;
     } 
-	else if (foot == 1) {
-        cout<<"      |    |     ";
-        gotoxy(2, 24 - dinoY);
-        cout<<"      /   /      ";
-        foot = !foot;
+	else if (kaki == 1) {
+        cout<<"     плм пл      ";
+        gotoxy(2, 24 - pekmen);
+        cout<<"          лм     ";
+        kaki = !kaki;
     }
     
-    gotoxy(2, 25 - dinoY);
-    if (jump == 0) {
+    gotoxy(2, 25 - pekmen);
+    if (lompat == 0) {
         cout<<"ппппппппппппппппп";
     } else {
         cout<<"                ";
     } 
-    Sleep(speed);
+    Sleep(laju);
 }
-void drawHurdle() {
-    static int plantX = 0;
-	static int score = 0;
-    if (plantX == 56 && dinoY < 4) {
-        score = 0;
-        speed = 40;
-        gotoxy(36, 8);cout<<"meninggoy";
+
+void duri() {
+    static int tajam = 0;
+	static int skor = 0;
+    if (tajam == 56 && pekmen < 4) {
+        skor = 0;
+        laju = 40;
+        gotoxy(36, 8);cout<<"Game Over";
         getch();
-        gameover = 1; 
+        selesai = 1; 
     }
     
-    gotoxy(hurdlePos - plantX, 23);cout<<" [ ]  ";
-    gotoxy(hurdlePos - plantX, 24);cout<<" [ ]  ";
+    gotoxy(posisi_duri - tajam, 20);cout<<"        ";
+    gotoxy(posisi_duri - tajam, 21);cout<<" 	   ";
+    gotoxy(posisi_duri - tajam, 22);cout<<"   л    ";
+    gotoxy(posisi_duri - tajam, 23);cout<<"  ллл   ";
+    gotoxy(posisi_duri - tajam, 24);cout<<" ллллл  ";
      
-    plantX++;
+    tajam++;
     
-    if (plantX == 73) {
-        plantX = 0;
-        score++;
+    if (tajam == 73) {
+        tajam = 0;
+        skor++;
         gotoxy(11, 2);cout<<"     ";
-        gotoxy(11, 2);cout<<score;
-        if (speed > 20)
-            speed--;
+        gotoxy(11, 2);cout<<skor;
+        if (laju > 20)
+            laju--;
     }
 }
-void play(){ 
+
+void mulai(){ 
 	system("cls");
     char ch;
     int i;
-	init();
+	skor();
     while (true) {
         while (!kbhit()) {
-            if( gameover==1 ){
+            if( selesai==1 ){
             	return;
 			}
-			moveDino();
-            drawHurdle();
+			gerakan();
+            duri();
         }
         ch = getch();
         if (ch == 32) {
         	i = 0;
             while( i < 12) {
-                moveDino(1);
-                drawHurdle();
+                gerakan(1);
+                duri();
                 i++;
             }
             while(i > 0) {
-                moveDino(2);
-                drawHurdle();
+                gerakan(2);
+                duri();
                 i--;
         	}
         }
@@ -150,13 +157,15 @@ int main() {
     
     do{
 		system("cls");
-		gotoxy(10,4); cout<<"GAME LOMPAT KOTAK";
-		gotoxy(10,7); cout<<"1. Mulai ";
-		gotoxy(10,8); cout<<"3. Keluar";
+		gotoxy(10,5); cout<<" лллллллллллллллллллллллл "; 
+		gotoxy(10,6); cout<<" л      LOMPAT DURI     л ";  
+		gotoxy(10,7); cout<<" лллллллллллллллллллллллл ";
+		gotoxy(10,9); cout<<"1. Mulai Permainan";
+		gotoxy(10,10); cout<<"2. keluar";	 
 		char op = getche();
 		
-		if( op=='1') play();
-		else if( op=='3') exit(0);
+		if( op=='1') mulai();
+		else if( op=='2') exit(0);
 		
 	}while(1);
     
